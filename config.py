@@ -6,7 +6,7 @@ class DevelopmentConfig(Config):
     MYSQL_HOST = 'localhost'
     MYSQL_USER = 'root'
     MYSQL_PASSWORD = '123lapopo123'
-    MYSQL_DB = 'spotifyproyeto'
+    MYSQL_DB = 'proyecto_spotify'
 
 config = {
     'development':DevelopmentConfig
