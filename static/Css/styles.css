@@ -113,7 +113,7 @@ body{
 
 	position: fixed;
 	width: 30rem;
-	height: calc(100vh - 8rem)
+	height: calc(100vh)
 }
 
 .logo_svg {

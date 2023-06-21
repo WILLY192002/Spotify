@@ -1,13 +1,13 @@
 {% extends './base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Registro{% endblock %}
 
 {% block customCSS %}
-<link rel="stylesheet" href="{{url_for('static', filename='css/login.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/register.css')}}">
 {% endblock %}
 
 {% block body %}
-<form class="form-signin" action="/login" method="POST">
+<form class="form-signup" action="/registro" method="POST">
     <div class="container_logo">
       <a href="#" class="link_logo">
         <svg viewBox="0 0 63 20" class="logo_svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">
@@ -34,14 +34,22 @@
     {% endwith %}
 
     <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" name="username" placeholder="name@example.com">
-      <label for="floatingInput">Correo Electronico</label>
+      <input type="text" class="form-control" id="floatingName" name="name" placeholder="Nombre">
+      <label for="floatingName">Nombre</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password">
+      <input type="text" class="form-control" id="floatingUsername" name="username" placeholder="Usuario">
+      <label for="floatingUsername">Usuario</label>
+    </div>
+    <div class="form-floating">
+      <input type="email" class="form-control" id="floatingEmail" name="email" placeholder="name@example.com">
+      <label for="floatingEmail">Correo Electrónico</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Contraseña">
       <label for="floatingPassword">Contraseña</label>
     </div>
-    <button class="w-100 btn btn-lg btn_login" type="submit">Ingresar</button>
+    <button class="w-100 btn btn-lg btn_register" type="submit">Registrarse</button>
     <a href="{{ url_for('home')}}" class="btn_home">Menu Principal</a>
   </form>
   
