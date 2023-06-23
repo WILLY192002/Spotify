@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400&family=Rubik:wght@400;500;600;700&display=swap');
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #121212; /* Cambio del color de fondo a #121212 */
+}
+
+
+.form-signup {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+  }
+  
+  .form-signup .form-floating:focus-within {
+    z-index: 2;
+  }
+
+  #floatingUsername, #floatingEmail, #floatingName{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  #floatingUsername, #floatingEmail, #floatingPassword{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .form-signup input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  
+  .btn_home{
+    color: white;
+    font-weight: 700;
+      text-decoration: none;
+      font-size: 1.3rem;
+    font-family: "Rubik";
+  }
+  
+  .btn_register{
+    background-color: white;
+    font-weight: 700;
+      text-decoration: none;
+      font-size: 1.6rem;
+    font-family: "Rubik";
+  }
+  
+  .btn_register:hover{
+    background-color: white;
+    transform: scale(1.05); /* Aumenta el tamaño del botón al pasar el puntero sobre él */
+  }
+  
+  .logo_svg {
+      color: #fff;
+      width: 18rem;
+      padding: 0 2.4rem;
+    margin-bottom: 10px;
+  }
+  
+  .link_logo {
+    margin-bottom: 10px;
+  }
+  

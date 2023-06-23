@@ -33,13 +33,26 @@ def home():
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
     # Lógica para la página de registro
-    return render_template('auth/login.html')
+    if request.method == 'POST':
+        password_hashed = User.set_password(request.form['password'])
+        user = User(0, request.form['name'], request.form['email'], password_hashed, request.form['username'])
+        success = ModelUser.register(db, user)
+
+        if success:
+            flash("¡Registro exitoso! Por favor, inicia sesión.")
+            return redirect(url_for('login'))
+        else:
+            flash("Error en el registro. Por favor, intenta nuevamente.")
+            return render_template('auth/register.html')
+    
+    else:
+        return render_template('auth/register.html')
     
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # Lógica para la página de inicio de sesión
     if request.method=='POST':
-        user = User(0,0,request.form['username'],request.form['password'],0)
+        user = User(0, 0,request.form['username'],request.form['password'],0)
         logged_user = ModelUser.login(db,user)
 
         if logged_user != None:

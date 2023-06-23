@@ -33,3 +33,16 @@ class ModelUser():
                 return None
         except Exception as ex:
             raise Exception(ex)
+        
+    @classmethod
+    def register(cls, db, user):
+        try:
+            cursor = db.connection.cursor()
+            sql = """INSERT INTO user (name, email, password, username)
+                     VALUES ('{}', '{}', '{}', '{}')""".format(
+                user.name, user.email, user.password, user.username)
+            cursor.execute(sql)
+            db.connection.commit()
+            return True
+        except Exception as ex:
+            raise Exception(ex)
