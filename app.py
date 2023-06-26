@@ -5,9 +5,17 @@ from flask_login import LoginManager, login_user, logout_user, login_required
 
 #Models
 from models.ModelUser import ModelUser
+from models.ModelGenero import ModelGenero
+from models.ModelCancion import ModelCanciones
+from models.ModelSubida import ModelSubida
 
 #Entities
 from models.entities.User import User
+from models.entities.Canciones import Canciones
+from models.entities.Subida import Subida
+
+#Operative System
+import os
 
 
 
@@ -25,6 +33,52 @@ def load_user(id):
 @app.route('/')
 def index():
     return redirect(url_for('home'))
+
+@app.route('/user_<int:id_user>/upload-music', methods=['GET','POST'])
+def upload(id_user):
+    print("IDE USUARIO:",id_user)
+    if request.method == 'POST':
+        imagen = request.files['img_File'] #ESTE ES EL ARCHIVO
+        autor = request.form['Aname']
+        nombre = request.form['Sname']
+
+        #PARA AGREGAR UN NUEVO GENERO
+        genero = request.form.get('ListGen')
+        if request.form['otherOption'] != "":
+            genero =  request.form['otherOption']
+            print("GENERO: |", genero,"|")
+            #HACE LA INSERCIÓN EN BD
+            ModelGenero.Insert(db,genero.upper())
+            genero = ModelGenero.Select(db,'{}'.format(genero.upper()))[0].id
+
+        #AGREGAR UNA NUEVA CANCION
+        AddCancion = Canciones(0,nombre, autor, genero)
+        ModelCanciones.agregar(db, AddCancion)
+        idCancion = (ModelCanciones.filtrar(db, {'autor': '{}'.format(autor), 'nombre':'{}'.format(nombre)}))[0].id
+        
+        #AGRE NUEVA SUVIDA
+        AddSubida = Subida(id_user, idCancion)
+        ModelSubida.agregar(db, AddSubida)
+        
+        
+            #GUARDAR LA IMAGEN CON AUTOR-NOMBRECANCION
+        if imagen:
+            ruta_proyecto = os.path.dirname(os.path.abspath(__file__))
+            ruta_destino = ruta_proyecto+'\static\img'
+            nombre_archivo, extension = os.path.splitext(imagen.filename)
+            print("NOMBRE ARCHIVO: ", nombre_archivo, "EXTENSIÓN: ", extension)
+            imagen.save(os.path.join(ruta_destino, '{}-{}{}'.format(autor.capitalize(), nombre.capitalize(),extension)))
+
+        #GUARDAR EL AUDIO CON AUTOR-NOMBRECANCION
+        audio = request.files['mp3_File']
+        ruta_proyecto = os.path.dirname(os.path.abspath(__file__))
+        ruta_destino = ruta_proyecto+'\static\music'
+        audio.save(os.path.join(ruta_destino, '{}-{}.mp3'.format(autor.capitalize(), nombre.capitalize())))
+        
+        return redirect(url_for('home'))
+    
+    generos = ModelGenero.Select(db, "")
+    return render_template('upload.html', id_user = id_user,generos = generos)
 
 @app.route('/index', methods = ['GET', 'POST'])
 def home():
