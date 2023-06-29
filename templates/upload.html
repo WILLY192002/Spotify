@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 {% block title%}
-Spotify inicio
+Subir canciones
 {% endblock %}
 
 {% block content %}
@@ -8,14 +8,14 @@ Spotify inicio
 <form class="main_content content_up" action="/user_{{id_user}}/upload-music" method="POST" enctype="multipart/form-data">
     <div class="container_izq">
         <div class="Jl_upload"><label for="JlSelect_img">Subir Imagen:</label></div>
-        <div><input type="file" class="input" id="imgFile" name="img_File" accept=".PNG, .JPG, .JPEG, .BMP, .GIF" style="cursor: pointer;"></div>
-        <div class="Jl_upload"><label for="JlSelect_mp3">Subir audio MP3: *</label></div>
-        <div><input type="file" class="input" id="mp3File" name="mp3_File" accept=".mp3" style="cursor: pointer;" oninput="activarSubir()"></div>
-        <div class="Jl_upload"><label for="JlAutor_name">Nombre del autor: *</label></div>
-        <div><input type="text" class="input" id="Autor_name" name="Aname" style="cursor: text;" placeholder="Escribe aquí" oninput="activarSubir()"></div>
-        <div class="Jl_upload"><label for="Jlname_song">Nombre de la canción: *</label></div>
-        <div><input type="text" class="input" id="song_name" name="Sname" style="cursor: text;" placeholder="Escribe aquí" oninput="activarSubir()"></div>
-        <div class="Jl_upload"><label for="Jlgenero">Genero:</label></div>
+        <div><input type="file" class="input"  name = "img_File" id="imgFile"accept=".PNG" style="cursor: pointer;"></div>
+        <div class="Jl_upload"><label>Subir audio MP3: *</label></div>
+        <div><input type="file" class="input" name="mp3_File" id="mp3Files" accept=".mp3" style="cursor: pointer;" oninput="activarSubir()"></div>
+        <div class="Jl_upload"><label>Nombre del autor: *</label></div>
+        <div><input type="text" class="input"  name="Aname" id="Autor_name" style="cursor: text;" placeholder="Escribe aquí" oninput="activarSubir()"></div>
+        <div class="Jl_upload"><label>Nombre de la canción: *</label></div>
+        <div><input type="text" class="input" name ="Sname" id="song_name" style="cursor: text;" placeholder="Escribe aquí" oninput="activarSubir()"></div>
+        <div class="Jl_upload"><label>Genero:</label></div>
         <div>
             <select id="list_generos" name="ListGen" onchange="checkOption(this.value)">
                 {% for genero in generos %}
@@ -30,7 +30,7 @@ Spotify inicio
         </div>
     </div>
     <div class="container_der">
-        <div class="temp_img"><img id="img_preview" src="../static/img/unknown.jpg"></div>
+        <div class="temp_img"><img id="img_preview" src="/static/img/unknown.jpg"></div>
         <div class="temp_Songname"><label id="Songname_preview" for="Jltemp_nombre">NOMBRE CANCION</label></div>
         <div class="temp_Autor"><label id="autor_preview" for="Jltemp_autor">AUTOR</label></div>
         <div class="temp_audio"><audio id="mp3_preview" controls></audio></div>
@@ -38,7 +38,7 @@ Spotify inicio
 
     <div class="play">
         <div class="content">
-            <button class="btn-subir" id = "btn_subir" disabled >SUBIR</button>
+            <button class="btn-subir" id = "btn_subir" disabled>SUBIR</button>
         </div>
     </div>
 </form>

@@ -1,0 +1,94 @@
+{% extends 'layout.html' %}
+{% block title%}
+Gestionar canciones
+{% endblock %}
+
+{% block content %}
+
+<form class="main_content" action='/gestion-canciones/{{id_user}}/' method="POST" enctype="multipart/form-data">
+    {% for subida in subidas %}
+    <div id="expandir">
+        <div><input type="text" id="edt_id" name="edtId" namestyle="display: block;" value="{{subida.id}}"></div>
+        <div id="G_noExpandir">
+
+            <div id="Inf_basica">
+                <div class=" Jl_upload"><label>Nombre de la canción: *</label></div>
+                <div><input type="text" class="input" id="edt_nombre" name="edtnombrecancion" style="cursor: text"
+                        value="{{subida.nombrecancion}}"></div>
+            </div>
+            <div id="IconsEdit_trash">
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-trash-can"></i>Borrar
+                    </a>
+                </li>
+                <li onclick="expandirDiv()">
+                    <a href="#">
+                        <i class="fa-solid fa-gears"></i>Editar
+                    </a>
+                </li>
+            </div>
+        </div>
+
+        <div id="camposAdicionales" style="display: none;">
+            <div class="add">
+                <div class="Jl_upload "><label>Nombre del autor: *</label></div>
+                <div><input type="text" class="input" id="edt_autor" name="edtautor" style="cursor: text;" value="{{subida.autor}}">
+                </div>
+            </div>
+
+            <!-- <div class="add">
+                <div class="Jl_upload "><label>Subir audio MP3: *</label></div>
+                <div><input type="file" class="input" id="edt_mp3" name="edtmp3" accept=".mp3" style="cursor: pointer;"></div>
+            </div> -->
+
+            <div class="add">
+                <div class="Jl_upload "><label>Subir imagen: *</label></div>
+                <div><input type="file" class="input" id="edt_img" name="edtimg" accept=".PNG" style="cursor: pointer;"></div>
+            </div>
+
+            <div class="add">
+                <div class="Jl_upload"><label>Genero:</label></div>
+                <div>
+                    <select id="list_generos" name="edtlistgen" onchange="checkOption(this.value)">
+                        {% for genero in generos %}
+                        {% if genero.id == subida.genero %}
+                        <option value={{genero.id}} selected>{{genero.nombre}}</option>
+                        {% else %}
+                        <option value={{genero.id}}>{{genero.nombre}}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="add">
+                <div class="Jl_upload"><label for="enableOtherOption">Agregar genero:</label></div>
+                <div id="to_check">
+                    <div class = "to_checked">
+                        <input type="checkbox" id="enableOtherOption" onchange="toggleOption()">
+                    </div>
+                    
+                    <div class = "to_checked">
+                        <input type="text" id="other_Option" name="edtotheroption" placeholder="Escribe la opción aquí"
+                        style="display: none;">
+                    </div>
+                    
+                </div>
+            </div>
+
+
+            <div class="play">
+                <div class="content">
+                    <button class="btn-subir" id="subir_edt">Aplicar Cambios</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+
+
+</form>
+
+{% endblock %}

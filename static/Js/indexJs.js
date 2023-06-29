@@ -1,3 +1,4 @@
+// ACOMODAR BARRA SUPERIOR
 const supBar = document.querySelector('.sup_bar');
 
 // Cambiar opacidad con Scroll
@@ -18,61 +19,37 @@ supBar.addEventListener('mouseout', () => {
 	supBar.classList.add('transparent');
 });
 
-// Nueva variable para almacenar altura del Topbar
+//acomomodar el contenido principal
 let supbarHeight = supBar.offsetHeight;
-// Añadimos un paddingTop basado en la altura al main-content o el contenido principal
 const mainContent = document.querySelector('.main_content');
 mainContent.style.paddingTop = `${supbarHeight + 20}px`;
 
-const music_card = document.querySelectorAll(
-	'.music_card'
-);
 
-// Función que se va a repetir
+///////////PONER BOTON VERDE A LAS CANCIONES//////////////////////////
+
+var music_card = document.querySelectorAll('.music_card');
+
 const createButton = card => {
-	// Crear el botón
 	const button = document.createElement('button');
 	button.innerHTML = '<i class="fa-solid fa-play"></i>';
-
-	// Agregar el botón al elemento hijo
 	card.appendChild(button);
-
-	// Ocultar el botón inicialmente
 	button.style.display = 'none';
 	button.classList.add('btn_play');
-
-	// Agregamos un evento de hover a este elemento
-	// Se necesita cuando el mouse entra y cuando sale
 	card.addEventListener('mouseover', () => {
 		button.style.display = 'block';
 	});
-
 	card.addEventListener('mouseout', () => {
 		button.style.display = 'none';
 	});
 };
-
 music_card.forEach(card => {
 	createButton(card);
 });
 
 
 
-//PARA REPRODUCIR
+////////////////////////////PARA SUBIR CANCION/////////////////////////////////
 
-const container_music_card = document.querySelectorAll('.container_musics_cards')
-container_music_card.forEach(tarjeta => {
-	tarjeta.addEventListener('click', () => {
-		const audio = document.querySelector('.audio_rep');
-		audio.innerHTML = '<source src="../static/music/Esteman-Baila.mp3" type="audio/mpeg">';
-	});
-})
-
-
-//SUBIR CANCION
-
-
-//ACTUALIZAR VISTA
 //ACTUALIZAR IMAGEN
 const fileInputImg = document.getElementById('imgFile');
 const imagePreview = document.getElementById('img_preview');
@@ -88,7 +65,7 @@ fileInputImg.addEventListener('change', function (event) {
 });
 
 //ACTUALIZAR ARCHIVO DE AUDIO
-const fileInputMp3 = document.getElementById('mp3File');
+const fileInputMp3 = document.getElementById('mp3Files');
 const audioPlayer = document.getElementById('mp3_preview');
 fileInputMp3.addEventListener('change', function (event) {
 	const selectedAudio = event.target.files[0];
@@ -146,10 +123,21 @@ function toggleOption() {
 
 //ACTIVAR O DESACTIVAR EL BOTON SUBIR CANCION
 var boton = document.getElementById("btn_subir");
-function activarSubir(){
-	if(fileInputMp3.files.length > 0 && textInputAutor.value.trim() !== "" && textSongname.value.trim() !== ""){
+function activarSubir() {
+	if (fileInputMp3.files.length > 0 && textInputAutor.value.trim() !== "" && textSongname.value.trim() !== "") {
 		boton.disabled = false;
+	} else {
+		boton.disabled = true;
+	}
+}
+
+
+//////////////////////PARA EDITAR CANCIONES///////////////////////////
+function expandirDiv(){
+	var camposAdicionales = document.getElementById("camposAdicionales");
+	if(camposAdicionales.style.display == "none"){
+		camposAdicionales.style.display = "block";
 	}else{
-		boton.disabled=true;
+		camposAdicionales.style.display = "none";
 	}
 }

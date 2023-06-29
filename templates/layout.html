@@ -54,15 +54,6 @@
                 </a>
             </div>
             <ul class="nav_main">
-                {% if current_user.is_authenticated %}
-                <li>
-                    
-                    <a href="{{ url_for('home')}}">
-                        <i class="fa-solid fa-house-chimney"></i>Inicio
-                    </a>
-                    
-                </li>
-                {% endif %}
                 <li>
                     <a href="">
                         <i class="fa-solid fa-magnifying-glass"></i>Buscar
@@ -70,11 +61,22 @@
                 </li>
                 {% if current_user.is_authenticated %}
                 <li>
+                    <a href="{{ url_for('home', id_user = current_user.id)}}">
+                        <i class="fa-solid fa-house-chimney"></i>Inicio
+                    </a>
+                </li>
+                <li>
                     <a href="{{ url_for('upload', id_user = current_user.id)}}">
                         <i class="fa-solid fa-upload"></i>Subir Canción
                     </a>
                 </li>
+                <li>
+                    <a href="{{ url_for('gestionar', id_user = current_user.id)}}">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>Gestionar mis canciones
+                    </a>
+                </li>
                 {% endif %}
+                
             </ul>
             {% if current_user.is_authenticated %}
             <div class="extra_options">
@@ -97,7 +99,7 @@
     <!--Fontawesome scripts-->
     <script src="https://kit.fontawesome.com/5cfcb37747.js" crossorigin="anonymous"></script>
     <!--Java scripts-->
-    <script src="../static/Js/indexJs.js"></script>
+    <script src="/static/Js/indexJs.js"></script>
 </body>
 
 </html>

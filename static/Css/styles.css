@@ -228,6 +228,8 @@ body {
 }
 
 .music_card {
+	display: flex;
+	justify-content: center;
 	background-color: #181818;
 	border-radius: 0.5rem;
 	padding: 1.6rem;
@@ -242,12 +244,17 @@ body {
 }
 
 .card_img img {
-	width: 100%;
+	max-width: 100%;
+	height: auto;
 	border-radius: 0.5rem;
 }
 
 .card_img {
-	overflow: hidden;
+	display: flex;
+	justify-items: center;
+	width: 10vw;
+	height: 25vh;
+	/*overflow: hidden;*/
 }
 
 .card h2 {
@@ -429,7 +436,7 @@ body {
 .play {
 	display: flex;
 	justify-content: center;
-	
+
 
 	padding: 1rem 2rem;
 	background-image: linear-gradient(to right, #121212, #1ed760, #121212);
@@ -449,7 +456,6 @@ body {
 	grid-template-columns: 3fr 1fr;
 	grid-template-rows: 4fr 1fr;
 	flex-direction: column;
-
 }
 
 .container_izq {
@@ -530,17 +536,21 @@ body {
 	margin-bottom: 1rem;
 }
 
-.btn-subir{
+.btn-subir {
 	padding: 10px 20px;
 	font-size: 16px;
 	font-weight: bold;
 	text-align: center;
 	text-decoration: none;
-	
-	color: #4CAF50; /* Color del texto del botón */
-	border: none; /* Sin borde */
-	border-radius: 4px; /* Borde redondeado */
-	cursor: pointer; /* Cursor de tipo puntero al pasar por encima del botón */
+
+	color: #4CAF50;
+	/* Color del texto del botón */
+	border: none;
+	/* Sin borde */
+	border-radius: 4px;
+	/* Borde redondeado */
+	cursor: pointer;
+	/* Cursor de tipo puntero al pasar por encima del botón */
 }
 
 #img_preview {
@@ -550,7 +560,7 @@ body {
 }
 
 #enableOtherOption {
-	transform: scale(1.5);
+	transform: scale(2);
 }
 
 #other_Option {
@@ -561,6 +571,64 @@ body {
 	width: 30rem;
 }
 
+#to_check {
+	display: flex;
+	flex-direction: row;
+}
+
+.to_checked {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 10vh;
+}
+
+#expandir{
+	flex-direction: column;
+}
+/*GESTION*/
+#G_noExpandir {
+	display: grid;
+	padding: 0 2.4rem;
+	grid-template-columns: 1fr 3fr;
+	gap: 3rem;
+}
+
+#IconsEdit_trash {
+	display: grid;
+	padding: 0 2.4rem;
+	grid-template-columns: 1fr 1fr;
+	gap: 3rem;
+}
+
+#IconsEdit_trash li {
+	list-style: none;
+}
+
+#IconsEdit_trash li a {
+	text-decoration: none;
+	font-size: 1.6rem;
+	color: #b3b3b3;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 2rem;
+	font-weight: 600;
+	transition: all 0.3s ease;
+}
+
+#IconsEdit_trash li a:hover {
+	color: #fff;
+}
+
+#IconsEdit_trash li a i {
+	font-size: 4rem;
+}
+
+.add {
+	margin: 2.5rem;
+}
 
 /*Aparte*/
 .transparent {
