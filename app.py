@@ -6,15 +6,12 @@ from flask_login import LoginManager, login_user, logout_user, login_required
 #Models
 from models.ModelUser import ModelUser
 from models.ModelGenero import ModelGenero
-from models.ModelCancion import ModelCanciones
-from models.ModelSubida import ModelSubida
 from models.ModelCrearTabla import ModelCrearTabla
-from models.ModelAddToUser import ModelAddToUser
+from models.ModelAddToUser import ModelAddToUser 
 
 #Entities
 from models.entities.User import User
-from models.entities.Canciones import Canciones
-from models.entities.Subida import Subida
+
 from models.entities.TablaUser import TablaUser
 
 #Operative System
@@ -39,6 +36,9 @@ def load_user(id):
 @app.route('/')
 def index():
     return redirect(url_for('home', id_user = 0))
+@app.route('/filter')
+def filtrar(id_user, ):
+    filtradas = ModelAddToUser.Select(db,id_user,{'nombre:'})
 
 @app.route('/<int:id_user>/edit-song/<int:id_reg>', methods=['GET','POST'])
 def editSong(id_user, id_reg):
@@ -182,15 +182,39 @@ def reproducir(id_user, autor, cancion):
 
     if autor != '' and cancion != '':
         recuperadas = ModelAddToUser.Select(db, id_user, {})
-        return render_template('index.html', recuperadas = recuperadas, user = id_user, autor = autor, nombre = cancion)
+        generos = ModelGenero.Select(db,{})
+        return render_template('index.html', recuperadas = recuperadas, generos = generos, user = id_user, autor = autor, nombre = cancion)
     else:
         return redirect(url_for('home', id_user = id_user)) 
 
 @app.route('/index/<int:id_user>', methods = ['GET', 'POST'])
 def home(id_user):
     if id_user != 0:
-        recuperadas = ModelAddToUser.Select(db, id_user, {})
-        return render_template('index.html', recuperadas = recuperadas, autor = "", nombre = "")    
+        genero = request.args.get('BusquedaGen')
+        nombre = request.args.get('BusquedaNom')
+        if genero == None:
+            genero = ""
+        if nombre == None:
+            nombre =""
+        filtro = {}
+
+        print("FILTROS",nombre,"||",genero)
+        if nombre != "" and genero != "":
+            print("Entrooo1")
+            print("Entrooo1",nombre,"||",genero)
+            filtro = {'nombrecancion':nombre, 'autor':nombre, 'genero_id':genero}
+        elif nombre != "":
+            print("Entrooo2")
+            print("Entrooo2",nombre,"||",genero)
+            filtro = {'nombrecancion':nombre, 'autor':nombre}
+        elif genero != "":
+            print("Entrooo3")
+            print("Entrooo3",nombre,"||",genero)
+            filtro = {'genero_id':genero}
+
+        recuperadas = ModelAddToUser.filter(db, id_user, filtro)
+        generos = ModelGenero.Select(db,{})
+        return render_template('index.html', recuperadas = recuperadas, generos = generos,autor = "", nombre = "", user = id_user)    
     else:
         return render_template('auth/login.html')
 

@@ -63,3 +63,31 @@ class ModelAddToUser():
                 return False
         except Exception as ex:
             raise Exception(ex)
+        
+    @classmethod
+    def filter(self, db, usuario_id, filtros):
+        Tabla = "TableUser"+str(usuario_id)
+        try:
+            cursor = db.connection.cursor()
+            sql = "SELECT id, usuario_id, nombrecancion, autor, genero_id, foto FROM proyecto_spotify."+Tabla
+            if filtros:
+                sql += " WHERE "
+                condiciones = []
+
+                for clave, valor in filtros.items():
+                    condiciones.append(f"{clave} LIKE '%{valor}%'")
+
+                sql += " OR ".join(condiciones)
+                print("LAQUE:",sql)
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            salida = []
+            if rows != None:
+                for i in rows:
+                    Tablauser = TablaUser(i[0], i[1], i[2], i[3], i[4], i[5])
+                    salida.append(Tablauser)
+                return salida
+            else:
+                return False
+        except Exception as ex:
+            raise Exception(ex)

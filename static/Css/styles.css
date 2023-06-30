@@ -449,6 +449,49 @@ body {
 	height: 8rem;
 }
 
+.OptionBusqueda {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 30px;
+}
+
+.Btn_Lupa button {
+	border-radius: 50%;
+	/* Establece el contorno redondo */
+	background-color: #b3b3b3;
+	/* Establece el color de fondo */
+	width: 4rem;
+	/* Establece el tamaño utilizando unidades relativas */
+	height: 4rem;
+	/* Establece el tamaño utilizando unidades relativas */
+	cursor: pointer;
+}
+
+.checkfilter select {
+	/* Elimina la apariencia nativa del select */
+	border: none;
+	/* Elimina el borde predeterminado */
+	padding: 0.5rem 1rem;
+	/* Ajusta el relleno según tus necesidades */
+	border-radius: 50px;
+	/* Establece el contorno redondo similar al botón */
+	background-color: #b3b3b3;
+	/* Establece el color de fondo similar al botón */
+	color: #000;
+	/* Establece el color de texto */
+	font-size: 1rem;
+	/* Establece el tamaño de fuente */
+	cursor: pointer;
+	/* Cambia el cursor al pasar sobre el select */
+	width: 15rem;
+	height: 4rem;
+	/* Establece el ancho según tus necesidades */
+	font-weight: 700;
+	text-overflow: ellipsis;
+	transition: all 0.3s ease;
+}
+
 /*SUBIR ARCHIVOS*/
 .content_up {
 	display: grid;
@@ -645,15 +688,16 @@ body {
 	cursor: pointer;
 }
 
-.btn_borrar i{
+.btn_borrar i {
 	padding-right: 2rem;
 	font-size: 2.5rem;
 }
 
-.btn_borrar:hover{
+.btn_borrar:hover {
 	color: #fff;
 	transition: all 0.3s ease;
 }
+
 /*Aparte*/
 .transparent {
 	opacity: 0.5;
