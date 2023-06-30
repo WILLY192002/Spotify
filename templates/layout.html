@@ -61,7 +61,7 @@
                 </li>
                 {% if current_user.is_authenticated %}
                 <li>
-                    <a href="{{ url_for('home', id_user = current_user.id)}}">
+                    <a href="{{ url_for('home', id_user = current_user.id, id_gen = False)}}">
                         <i class="fa-solid fa-house-chimney"></i>Inicio
                     </a>
                 </li>

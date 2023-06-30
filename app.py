@@ -195,18 +195,18 @@ def upload(id_user):
     generos = ModelGenero.Select(db, "")
     return render_template('upload.html', id_user = id_user,generos = generos)
 
-@app.route('/reproduccion/<int:id_user>/<string:autor>/<string:cancion>',  methods = ['GET'])
-def reproducir(id_user, autor, cancion):
+@app.route('/reproduccion/<int:id_user>/<string:autor>/<string:cancion>/<int:id_gen>',  methods = ['GET'])
+def reproducir(id_user, autor, cancion, id_gen):
 
     if autor != '' and cancion != '':
-        recuperadas = ModelAddToUser.Select(db, id_user, {})
+        recuperadas = ModelAddToUser.Select(db, id_user, {'genero_id':id_gen})
         generos = ModelGenero.Select(db,{})
-        return render_template('index.html', recuperadas = recuperadas, generos = generos, user = id_user, autor = autor, nombre = cancion)
+        return render_template('index.html', recuperadas = recuperadas, generos = generos, user = id_user, autor = autor, nombre = cancion, id_gen = '')
     else:
         return redirect(url_for('home', id_user = id_user)) 
 
-@app.route('/index/<int:id_user>', methods = ['GET', 'POST'])
-def home(id_user):
+@app.route('/index/<int:id_user>/<int:id_gen>', methods = ['GET', 'POST'])
+def home(id_user, id_gen):
     if id_user != 0:
         genero = request.args.get('BusquedaGen')
         nombre = request.args.get('BusquedaNom')
@@ -216,23 +216,25 @@ def home(id_user):
             nombre =""
         filtro = {}
 
-        print("FILTROS",nombre,"||",genero)
-        if nombre != "" and genero != "":
-            print("Entrooo1")
-            print("Entrooo1",nombre,"||",genero)
-            filtro = {'nombrecancion':nombre, 'autor':nombre, 'genero_id':genero}
-        elif nombre != "":
-            print("Entrooo2")
-            print("Entrooo2",nombre,"||",genero)
-            filtro = {'nombrecancion':nombre, 'autor':nombre}
-        elif genero != "":
-            print("Entrooo3")
-            print("Entrooo3",nombre,"||",genero)
-            filtro = {'genero_id':genero}
+        if id_gen:
+            filtro = {'genero':id_gen}
+        else:
+            if nombre != "" and genero != "":
+                print("Entrooo1")
+                print("Entrooo1",nombre,"||",genero)
+                filtro = {'nombrecancion':nombre, 'autor':nombre, 'genero_id':genero}
+            elif nombre != "":
+                print("Entrooo2")
+                print("Entrooo2",nombre,"||",genero)
+                filtro = {'nombrecancion':nombre, 'autor':nombre}
+            elif genero != "":
+                print("Entrooo3")
+                print("Entrooo3",nombre,"||",genero)
+                filtro = {'genero_id':genero}
 
         recuperadas = ModelAddToUser.filter(db, id_user, filtro)
         generos = ModelGenero.Select(db,{})
-        return render_template('index.html', recuperadas = recuperadas, generos = generos,autor = "", nombre = "", user = id_user)    
+        return render_template('index.html', recuperadas = recuperadas, generos = generos,autor = "", nombre = "", user = id_user, id_gen = id_gen)    
     else:
         return render_template('auth/login.html')
 
@@ -266,8 +268,7 @@ def login():
         if logged_user != None:
             if logged_user.password:
                 login_user(logged_user)
-                print("PENES GRANDOTES: ", logged_user.id)
-                return redirect(url_for('home', id_user = logged_user.id))
+                return redirect(url_for('home', id_user = logged_user.id, id_gen = False))
             else:
                 flash("Contraseña Incorrecta")
                 return render_template('auth/login.html')

@@ -11,7 +11,7 @@ Spotify inicio
         <h1 class="title_playlist">
             MIS CANCIONES
         </h1>
-        <form action="/index/{{user}}" method="get" class="OptionBusqueda">
+        <form action="/index/{{user}}/{{id_gen}}" method="get" class="OptionBusqueda">
             <div class="Btn_Lupa"><button><i class="fa-solid fa-magnifying-glass"></i></button></div>
             <div>
                 <input type="text" class="input" name="BusquedaNom" placeholder="Nombre de cancion">
@@ -29,7 +29,7 @@ Spotify inicio
         {% if recuperadas %}
         <div id="music_container_cards" class="container_musics_cards">
             {% for recuperada in recuperadas %}
-            <form action='/reproduccion/{{recuperada.usuario_id}}/{{recuperada.autor}}/{{recuperada.nombrecancion}}'method="get">
+            <form action='/reproduccion/{{recuperada.usuario_id}}/{{recuperada.autor}}/{{recuperada.nombrecancion}}/{{recuperada.genero}}' method="get">
                 <div class="music_card">
                     <div class="card">
                         <div class="card_img">

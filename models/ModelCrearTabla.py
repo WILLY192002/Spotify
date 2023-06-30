@@ -5,11 +5,12 @@ class ModelCrearTabla():
         try:
             cursor = db.connection.cursor()
             sql = "CREATE TABLE "+nombreTabla+ """(id INT PRIMARY KEY AUTO_INCREMENT,
-                    usuario_id INT,
-                    nombrecancion VARCHAR(100),
-                    autor VARCHAR(100),
-                    genero_id INT,
-                    foto BOOLEAN,
+                    usuario_id INT NOT NULL,
+                    nombrecancion VARCHAR(100) NOT NULL,
+                    autor VARCHAR(100) NOT NULL,
+                    genero_id INT NOT NULL,
+                    foto BOOLEAN NOT NULL,
+                    ilike BOOLEAN NOT NULL
                     FOREIGN KEY (usuario_id) REFERENCES user(id),
                     FOREIGN KEY (genero_id) REFERENCES generomusica(id)
                 );"""
