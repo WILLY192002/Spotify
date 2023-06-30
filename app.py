@@ -40,8 +40,8 @@ def load_user(id):
 def index():
     return redirect(url_for('home', id_user = 0))
 
-@app.route('/gestion-canciones/<int:id_user>/', methods=['GET','POST'])
-def gestionar(id_user):
+@app.route('/<int:id_user>/edit-song/<int:id_reg>', methods=['GET','POST'])
+def editSong(id_user, id_reg):
     if request.method == 'POST':
         id_registro = request.form['edtId']
         nombreAnterior = ModelAddToUser.Select(db, id_user, {'id':id_registro})
@@ -72,13 +72,14 @@ def gestionar(id_user):
             ruta_destinoImg = ruta_proyecto+'\static\img\{}'.format('ImgUser_'+(str(id_user)))
             subirImagen(autor, nombrecancion, ruta_destinoImg, imagen)
             imagen = True
-        elif imagen == None and nombreAnterior[0].foto:
+        else:
+            print("ENTRA DONDE NO CREIA")
             imagenAnterior = nombreAnterior[0].autor+'-'+nombreAnterior[0].nombrecancion+'.PNG'
             ruta_destinoImg = ruta_proyecto+'\static\img\{}\{}'.format('ImgUser_'+(str(id_user)), imagenAnterior)
-            renombrarArchivo(ruta_destinoImg, autor+'-'+nombrecancion+'.PNG')
+            nuevonombre = ruta_proyecto+'\static\img\{}\{}'.format('ImgUser_'+(str(id_user)), autor+'-'+nombrecancion+'.PNG')
+            renombrarArchivo(ruta_destinoImg, nuevonombre)
             imagen = True
-        else:
-            imagen = False
+        
 
         if nombrecancion != "" and autor != "":
             #ACTUALIZAMOS LA BD
@@ -89,11 +90,30 @@ def gestionar(id_user):
             nuevonombre = ruta_proyecto+'\static\music\{}\{}'.format('MusicUser_'+(str(id_user)), autor+'-'+nombrecancion+'.mp3')
             renombrarArchivo(ruta_destinoAud, nuevonombre)
 
-        return redirect(url_for('home', id_user = id_user))
+        return redirect(url_for('gestionar', id_user = id_user))
+
     else:
-        recuperadas = ModelAddToUser.Select(db, id_user, "")
+        recuperada = ModelAddToUser.Select(db, id_user, {'id': id_reg})
         generos = ModelGenero.Select(db, "")
-        return render_template('gestion.html', subidas = recuperadas, generos = generos, id_user = id_user)
+        return render_template('editSong.html', generos = generos, subida = recuperada[0])
+
+@app.route('/gestion-canciones/<int:id_user>/', methods=['GET','POST'])
+def gestionar(id_user):
+        if request.method == 'POST':
+            id_registro = request.form['edtId2']
+            nombreAnterior = ModelAddToUser.Select(db, id_user, {'id':id_registro})
+            ruta_proyecto = os.path.dirname(os.path.abspath(__file__))
+            ruta_destinoImg = ruta_proyecto+'\static\img\{}'.format('ImgUser_'+(str(id_user)))
+            ruta_destinoAud = ruta_proyecto+'\static\Music\{}'.format('MusicUser_'+(str(id_user)))
+            ModelAddToUser.deleteToUser(db,id_registro,id_user)
+            borrarArchivo(ruta_destinoImg+'\{}-{}.PNG'.format(nombreAnterior[0].autor,nombreAnterior[0].nombrecancion))
+            borrarArchivo(ruta_destinoAud+'\{}-{}.mp3'.format(nombreAnterior[0].autor,nombreAnterior[0].nombrecancion))
+
+            return redirect(url_for('gestionar', id_user = id_user))
+        else:        
+            recuperadas = ModelAddToUser.Select(db, id_user, "")
+            generos = ModelGenero.Select(db, "")
+            return render_template('gestion.html', subidas = recuperadas, generos = generos, id_user = id_user)
 
 @app.route('/user_<int:id_user>/upload-music', methods=['GET','POST'])
 def upload(id_user):

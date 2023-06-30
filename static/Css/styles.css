@@ -583,9 +583,10 @@ body {
 	height: 10vh;
 }
 
-#expandir{
+#expandir {
 	flex-direction: column;
 }
+
 /*GESTION*/
 #G_noExpandir {
 	display: grid;
@@ -630,6 +631,29 @@ body {
 	margin: 2.5rem;
 }
 
+.btn_borrar {
+	font-size: 16px;
+	border: none;
+	background-color: transparent;
+	color: #b3b3b3;
+
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	font-weight: 600;
+	transition: all 0.3s ease;
+	cursor: pointer;
+}
+
+.btn_borrar i{
+	padding-right: 2rem;
+	font-size: 2.5rem;
+}
+
+.btn_borrar:hover{
+	color: #fff;
+	transition: all 0.3s ease;
+}
 /*Aparte*/
 .transparent {
 	opacity: 0.5;

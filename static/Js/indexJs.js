@@ -133,11 +133,11 @@ function activarSubir() {
 
 
 //////////////////////PARA EDITAR CANCIONES///////////////////////////
-function expandirDiv(){
+/* function expandirDiv(){
 	var camposAdicionales = document.getElementById("camposAdicionales");
 	if(camposAdicionales.style.display == "none"){
 		camposAdicionales.style.display = "block";
 	}else{
 		camposAdicionales.style.display = "none";
 	}
-}
+} */

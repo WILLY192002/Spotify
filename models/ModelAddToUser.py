@@ -25,6 +25,19 @@ class ModelAddToUser():
             raise Exception(ex)
         
     @classmethod
+    def deleteToUser(self, db,id_r , usuario_id):
+        Tabla = "TableUser"+str(usuario_id)
+        try:
+            cursor = db.connection.cursor()
+            sql = "DELETE FROM proyecto_spotify."+Tabla+" WHERE id = {}".format(id_r)
+            print("SQL: ", sql)
+            cursor.execute(sql)
+            db.connection.commit()
+            return True
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
     def Select(self, db, usuario_id, filtros):
         Tabla = "TableUser"+str(usuario_id)
         try:
