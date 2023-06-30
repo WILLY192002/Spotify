@@ -94,7 +94,7 @@ def editSong(id_user, id_reg):
         generos = ModelGenero.Select(db, "")
         return render_template('editSong.html', generos = generos, subida = recuperada[0])
 
-@app.route('/gestion-canciones/<int:id_user>/', methods=['GET','POST'])
+@app.route('/gestion-canciones/<int:id_user>', methods=['GET','POST'])
 def gestionar(id_user):
     if request.method == 'POST':
         id_registro = request.form['edtId2']
@@ -105,11 +105,32 @@ def gestionar(id_user):
         ModelAddToUser.deleteToUser(db,id_registro,id_user)
         borrarArchivo(ruta_destinoImg+'\{}-{}.PNG'.format(nombreAnterior[0].autor,nombreAnterior[0].nombrecancion))
         borrarArchivo(ruta_destinoAud+'\{}-{}.mp3'.format(nombreAnterior[0].autor,nombreAnterior[0].nombrecancion))
-
         return redirect(url_for('gestionar', id_user = id_user))
-    else:        
-        recuperadas = ModelAddToUser.Select(db, id_user, "")
-        generos = ModelGenero.Select(db, "")
+    else:
+        genero = request.args.get('BusquedaGen')
+        nombre = request.args.get('BusquedaNom')
+        if genero == None:
+            genero = ""
+        if nombre == None:
+            nombre =""
+        filtro = {}
+
+        print("FILTROS",nombre,"||",genero)
+        if nombre != "" and genero != "":
+            print("Entrooo1")
+            print("Entrooo1",nombre,"||",genero)
+            filtro = {'nombrecancion':nombre, 'autor':nombre, 'genero_id':genero}
+        elif nombre != "":
+            print("Entrooo2")
+            print("Entrooo2",nombre,"||",genero)
+            filtro = {'nombrecancion':nombre, 'autor':nombre}
+        elif genero != "":
+            print("Entrooo3")
+            print("Entrooo3",nombre,"||",genero)
+            filtro = {'genero_id':genero}
+        
+        recuperadas = ModelAddToUser.filter(db, id_user, filtro)
+        generos = ModelGenero.Select(db,{})
         return render_template('gestion.html', subidas = recuperadas, generos = generos, id_user = id_user)
 
 @app.route('/user_<int:id_user>/upload-music', methods=['GET','POST'])

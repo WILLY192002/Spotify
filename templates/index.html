@@ -20,7 +20,7 @@ Spotify inicio
                 <select id="list_generos" name="BusquedaGen" onchange="checkOption(this.value)">
                     <option value=""></option>
                     {% for genero in generos %}
-                    <option value={{genero.id}}>{{genero.nombre}}</option>
+                    <option value={{genero.id}}>{{genero.id}}. {{genero.nombre}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -41,7 +41,7 @@ Spotify inicio
                             {% endif %}
                         </div>
                         <h2>{{recuperada.nombrecancion}}</h2>
-                        <p>{{recuperada.autor}}</p>
+                        <p>{{recuperada.autor}} - Genero id: {{recuperada.genero}}</p>
                         <div style="display: flex; justify-content: space-between;">
                             <a href="{{ url_for('editSong', id_user = user, id_reg = recuperada.id)}}" style="font-size: small; color: aliceblue;">Editar</a>
                             
