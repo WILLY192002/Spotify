@@ -69,6 +69,7 @@ class ModelAddToUser():
         Tabla = "TableUser"+str(usuario_id)
         try:
             cursor = db.connection.cursor()
+            
             sql = "SELECT id, usuario_id, nombrecancion, autor, genero_id, foto FROM proyecto_spotify."+Tabla
             if filtros:
                 sql += " WHERE "
