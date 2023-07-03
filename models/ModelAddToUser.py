@@ -1,11 +1,11 @@
 from .entities.TablaUser import TablaUser
 class ModelAddToUser():
     @classmethod
-    def AddToUser(self, db, usuario_id, nombrecancion, autor, genero_id, foto):
+    def AddToUser(self, db, usuario_id, nombrecancion, autor, genero_id, foto, ilike):
         Tabla = "TableUser"+str(usuario_id)
         try:
             cursor = db.connection.cursor()
-            sql = "INSERT INTO proyecto_spotify."+Tabla+" (usuario_id, nombrecancion, autor, genero_id, foto) VALUES ({},'{}','{}',{},{})".format(usuario_id, nombrecancion, autor, genero_id, foto)
+            sql = "INSERT INTO proyecto_spotify."+Tabla+" (usuario_id, nombrecancion, autor, genero_id, foto, ilike) VALUES ({},'{}','{}',{},{},{})".format(usuario_id, nombrecancion, autor, genero_id, foto, ilike)
             cursor.execute(sql)
             db.connection.commit()
             return True
@@ -13,11 +13,14 @@ class ModelAddToUser():
             raise Exception(ex)
     
     @classmethod
-    def EditToUser(self, db,id_r , usuario_id, nombrecancion, autor, genero_id, foto):
+    def EditToUser(self, db,id_r , usuario_id, editar):
         Tabla = "TableUser"+str(usuario_id)
         try:
             cursor = db.connection.cursor()
-            sql = "UPDATE proyecto_spotify."+Tabla+" SET nombrecancion = '{}', autor = '{}', genero_id = {}, foto = {} WHERE id = {}".format(nombrecancion, autor, genero_id, foto, id_r)
+            columnas_valores = ', '.join([f"{columna} = '{valor}'" for columna, valor in editar.items()])
+            sql = "UPDATE proyecto_spotify."+Tabla+f" SET {columnas_valores} WHERE id = {id_r}"
+            #sql = "UPDATE proyecto_spotify."+Tabla+" SET nombrecancion = '{}', autor = '{}', genero_id = {}, foto = {} WHERE id = {}".format(nombrecancion, autor, genero_id, foto, id_r)
+            print("Consulta update: ", sql)
             cursor.execute(sql)
             db.connection.commit()
             return True
@@ -42,7 +45,7 @@ class ModelAddToUser():
         Tabla = "TableUser"+str(usuario_id)
         try:
             cursor = db.connection.cursor()
-            sql = "SELECT id, usuario_id, nombrecancion, autor, genero_id, foto FROM proyecto_spotify."+Tabla
+            sql = "SELECT id, usuario_id, nombrecancion, autor, genero_id, foto, ilike FROM proyecto_spotify."+Tabla
             if filtros:
                 condiciones = []
 
@@ -56,7 +59,7 @@ class ModelAddToUser():
             salida = []
             if rows != None:
                 for i in rows:
-                    Tablauser = TablaUser(i[0], i[1], i[2], i[3], i[4], i[5])
+                    Tablauser = TablaUser(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
                     salida.append(Tablauser)
                 return salida
             else:
@@ -70,7 +73,7 @@ class ModelAddToUser():
         try:
             cursor = db.connection.cursor()
             
-            sql = "SELECT id, usuario_id, nombrecancion, autor, genero_id, foto FROM proyecto_spotify."+Tabla
+            sql = "SELECT id, usuario_id, nombrecancion, autor, genero_id, foto, ilike FROM proyecto_spotify."+Tabla
             if filtros:
                 sql += " WHERE "
                 condiciones = []
@@ -79,13 +82,13 @@ class ModelAddToUser():
                     condiciones.append(f"{clave} LIKE '%{valor}%'")
 
                 sql += " OR ".join(condiciones)
-                print("LAQUE:",sql)
+                
             cursor.execute(sql)
             rows = cursor.fetchall()
             salida = []
             if rows != None:
                 for i in rows:
-                    Tablauser = TablaUser(i[0], i[1], i[2], i[3], i[4], i[5])
+                    Tablauser = TablaUser(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
                     salida.append(Tablauser)
                 return salida
             else:

@@ -6,14 +6,14 @@ Gestionar canciones
 {% block content %}
 
 <div class="main_content">
-    <form action="/gestion-canciones/{{id_user}}" method="get" class="OptionBusqueda">
+    <form action="/gestion-canciones/User_{{id_user}}" method="get" class="OptionBusqueda">
         <div class="Btn_Lupa"><button><i class="fa-solid fa-magnifying-glass"></i></button></div>
         <div>
             <input type="text" class="input" name="BusquedaNom" placeholder="Nombre de cancion">
         </div>
         <div class="checkfilter">
             <select id="list_generos" name="BusquedaGen" onchange="checkOption(this.value)">
-                <option value=""></option>
+                <option value="">Todas</option>
                 {% for genero in generos %}
                 <option value={{genero.id}}>{{genero.id}}. {{genero.nombre}}</option>
                 {% endfor %}

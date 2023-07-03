@@ -32,6 +32,7 @@ var music_card = document.querySelectorAll('.music_card');
 const createButton = card => {
 	const button = document.createElement('button');
 	button.innerHTML = '<i class="fa-solid fa-play"></i>';
+
 	card.appendChild(button);
 	button.style.display = 'none';
 	button.classList.add('btn_play');
@@ -133,11 +134,3 @@ function activarSubir() {
 
 
 //////////////////////PARA EDITAR CANCIONES///////////////////////////
-/* function expandirDiv(){
-	var camposAdicionales = document.getElementById("camposAdicionales");
-	if(camposAdicionales.style.display == "none"){
-		camposAdicionales.style.display = "block";
-	}else{
-		camposAdicionales.style.display = "none";
-	}
-} */

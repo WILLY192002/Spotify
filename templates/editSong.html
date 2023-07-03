@@ -4,7 +4,7 @@ Gestionar canciones
 {% endblock %}
 
 {% block content %}
-<form class="main_content" action='/{{subida.usuario_id}}/edit-song/{{subida.id}}' method="POST" enctype="multipart/form-data">
+<form class="main_content" action = "{{url_for('editSong', id_user  = subida.usuario_id, id_reg = subida.id)}}"  method="POST" enctype="multipart/form-data">
 
     <div id="expandir">
         <div><input type="text" id="edt_id" name="edtId" style="display: none;" value="{{subida.id}}"></div>
