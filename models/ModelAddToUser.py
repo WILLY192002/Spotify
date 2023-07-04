@@ -68,21 +68,33 @@ class ModelAddToUser():
             raise Exception(ex)
         
     @classmethod
-    def filter(self, db, usuario_id, filtros):
+    def filter(self, db, usuario_id, filtrosOR, filtrosAND):
         Tabla = "TableUser"+str(usuario_id)
         try:
             cursor = db.connection.cursor()
             
             sql = "SELECT id, usuario_id, nombrecancion, autor, genero_id, foto, ilike FROM proyecto_spotify."+Tabla
-            if filtros:
-                sql += " WHERE "
+            if filtrosOR:
+                sql += " WHERE ("
                 condiciones = []
 
-                for clave, valor in filtros.items():
-                    condiciones.append(f"{clave} LIKE '%{valor}%'")
+                for clave, valor in filtrosOR.items():
+                    condiciones.append(f"{clave} {valor}")
 
                 sql += " OR ".join(condiciones)
-                
+                sql += ")"
+
+            if filtrosAND:
+                condiciones = []
+                for clave, valor in filtrosAND.items():
+                    condiciones.append(f"{clave} {valor}")
+
+                if filtrosOR and filtrosOR:
+                    sql += " AND "+condiciones[0]
+                else:
+                    sql += " WHERE "+condiciones[0]
+            
+            print("AVERRACION: ", sql)
             cursor.execute(sql)
             rows = cursor.fetchall()
             salida = []

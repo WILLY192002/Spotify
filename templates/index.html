@@ -17,6 +17,7 @@ Spotify inicio
                 <input type="text" class="input" name="BusquedaNom" placeholder="Nombre de cancion">
             </div>
             <div class="checkfilter">
+                <label style="color: whitesmoke; font-size: medium;">Genero: </label>
                 <select id="list_generos" name="BusquedaGen" onchange="checkOption(this.value)">
                     <option value="">Todas</option>
                     {% for genero in generos %}

@@ -6,23 +6,32 @@ Gestionar canciones
 {% block content %}
 
 <div class="main_content">
-    <form action="/gestion-canciones/User_{{id_user}}" method="get" class="OptionBusqueda">
+    <form action="{{ url_for('gestionar', id_user = id_user, buscar = ' ', idgen = 0, like = 2)}}" method="get" class="OptionBusqueda">
         <div class="Btn_Lupa"><button><i class="fa-solid fa-magnifying-glass"></i></button></div>
         <div>
             <input type="text" class="input" name="BusquedaNom" placeholder="Nombre de cancion">
         </div>
         <div class="checkfilter">
+            <label style="color: whitesmoke; font-size: medium;">Genero: </label>
             <select id="list_generos" name="BusquedaGen" onchange="checkOption(this.value)">
-                <option value="">Todas</option>
+                <option value=0>Todas</option>
                 {% for genero in generos %}
                 <option value={{genero.id}}>{{genero.id}}. {{genero.nombre}}</option>
                 {% endfor %}
             </select>
         </div>
+        <div class="checkfilter">
+            <label style="color: whitesmoke; font-size: medium;">Filtrar por: </label>
+            <select id="list_generos" name="BusquedaLike" onchange="checkOption(this.value)">
+                <option value=2>Todo</option>
+                <option value=0>No me gusta</option>
+                <option value=1>Me gusta</option>
+            </select>
+        </div>
     </form>
 
     {% for subida in subidas %}
-    <form id="expandir" action="{{ url_for('gestionar', id_user = id_user)}}" method="POST" enctype="multipart/form-data">
+    <form id="expandir" action="/gestion-canciones/User_{{id_user}}/filterby/ftl1={{buscar}}/ftl2={{idgen}}/ftl3={{like}}" method="POST" enctype="multipart/form-data">
         <div><input type="text" id="edt_id" name="edtId2" style="display: none;" value="{{subida.id}}"></div>
         <div id="G_noExpandir">
 
