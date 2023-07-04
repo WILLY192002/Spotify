@@ -37,6 +37,23 @@ def load_user(id):
 def index():
     return redirect(url_for('login'))
 
+@app.route('/my-favorites-songs/User_<int:id_user>')
+def favoritas(id_user):
+
+    return render_template('favorites.html', id_user = id_user)
+
+@app.route('/actionlike/User_<int:id_user>/Registro=<int:id_reg>/Estate=<int:EstadoAnt>/return_to=<string:direccion>')
+def actionlike(id_user,id_reg,EstadoAnt, direccion):
+
+    if EstadoAnt == 0:
+        cambios = {'ilike': 1}
+    else:
+        cambios = {'ilike':0}
+    ModelAddToUser.EditToUser(db,id_reg,id_user, cambios)
+    direccion = direccion
+
+    return redirect(url_for(direccion, id_user = id_user))
+
 @app.route('/User_<int:id_user>/edit-song/Reg_<int:id_reg>', methods=['GET','POST'])
 def editSong(id_user, id_reg):
     #action='/User_{{subida.usuario_id}}/edit-song/{{subida.id}}'

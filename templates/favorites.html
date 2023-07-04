@@ -6,7 +6,7 @@ Gestionar canciones
 {% block content %}
 
 <div class="main_content">
-    <form action="/gestion-canciones/User_{{id_user}}" method="get" class="OptionBusqueda">
+    <form action="/my-favorites-songs/User_{{id_user}}" method="get" class="OptionBusqueda">
         <div class="Btn_Lupa"><button><i class="fa-solid fa-magnifying-glass"></i></button></div>
         <div>
             <input type="text" class="input" name="BusquedaNom" placeholder="Nombre de cancion">
@@ -21,8 +21,8 @@ Gestionar canciones
         </div>
     </form>
 
-    {% for subida in subidas %}
-    <form id="expandir" action="{{ url_for('gestionar', id_user = id_user)}}" method="POST" enctype="multipart/form-data">
+    <!-- {% for subida in subidas %}
+    <form id="expandir" action="{{ url_for('favorites', id_user = id_user)}}" method="POST" enctype="multipart/form-data">
         <div><input type="text" id="edt_id" name="edtId2" style="display: none;" value="{{subida.id}}"></div>
         <div id="G_noExpandir">
 
@@ -32,37 +32,15 @@ Gestionar canciones
                         value="{{subida.nombrecancion}}" disabled></div>
             </div>
             <div id="IconsEdit_trash">
-                <li>
-                    <button class="btn_borrar">
-                        <i class="fa-solid fa-trash-can"></i>Borrar
-                    </button>
-                </li>
-
-                <li>
-                    <a href="{{ url_for('editSong', id_user = subida.usuario_id, id_reg = subida.id)}}">
-                        <i class="fa-solid fa-gears"></i>Editar
-                    </a>
-                </li>
-
                 <li>    
-                    <a href="{{ url_for('actionlike', id_user = subida.usuario_id, id_reg = subida.id, EstadoAnt = subida.ilike, direccion = 'gestionar')}}">
+                    <a href="{{ url_for('actionlike', id_user = subida.usuario_id, id_reg = subida.id, EstadoAnt = subida.ilike)}}">
                         <i class="fa-solid fa-heart {% if subida.ilike == True %}likerojo{% else %}likeamarillo{% endif %}"></i>
                     </a>
-                    
-                    <!-- {% if subida.ilike == True %}
-                    <a href="#">
-                        <i class="fa-solid fa-heart" style="color: red"></i>
-                    </a>
-                    {%else%}
-                    <a href="#">
-                        <i class="fa-solid fa-heart" style="color: yellow"></i>
-                    </a>
-                    {%endif%} -->
                 </li>
             </div>
         </div>
     </form>
-    {% endfor %}
+    {% endfor %} -->
 </div>
 
 {% endblock %}

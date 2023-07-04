@@ -641,7 +641,7 @@ body {
 #IconsEdit_trash {
 	display: grid;
 	padding: 0 2.4rem;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr;
 	gap: 3rem;
 }
 
@@ -695,6 +695,23 @@ body {
 
 .btn_borrar:hover {
 	color: #fff;
+	transition: all 0.3s ease;
+}
+
+.likerojo {
+	color: red;
+}
+.likerojo:hover {
+	color: #fff;
+	transition: all 0.3s ease;
+}
+
+.likeamarillo {
+	color: #fff;
+}
+
+.likeamarillo:hover {
+	color: red;
 	transition: all 0.3s ease;
 }
 
