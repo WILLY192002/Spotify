@@ -85,18 +85,19 @@ def editSong(id_user, id_reg):
             ruta_destinoImg = ruta_proyecto+'\static\img\{}'.format('ImgUser_'+(str(id_user)))
             borrarArchivo(ruta_destinoImg+'\{}-{}.PNG'.format(nombreAnterior[0].autor,nombreAnterior[0].nombrecancion))
             subirImagen(autor, nombrecancion, ruta_destinoImg, imagen)
-            imagen = True
+            cambios['foto'] = 1
         elif imagen and nombreAnterior[0].foto == False:
             ruta_destinoImg = ruta_proyecto+'\static\img\{}'.format('ImgUser_'+(str(id_user)))
             subirImagen(autor, nombrecancion, ruta_destinoImg, imagen)
-            imagen = True
+            imagen = 1
+            cambios['foto'] = 1
         else:
             print("ENTRA DONDE NO CREIA")
             imagenAnterior = nombreAnterior[0].autor+'-'+nombreAnterior[0].nombrecancion+'.PNG'
             ruta_destinoImg = ruta_proyecto+'\static\img\{}\{}'.format('ImgUser_'+(str(id_user)), imagenAnterior)
             nuevonombre = ruta_proyecto+'\static\img\{}\{}'.format('ImgUser_'+(str(id_user)), autor+'-'+nombrecancion+'.PNG')
             renombrarArchivo(ruta_destinoImg, nuevonombre)
-            imagen = True
+            
         
 
         if nombrecancion != "" and autor != "":
