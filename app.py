@@ -129,7 +129,7 @@ def gestionar(id_user, buscar, idgen,like):
         ModelAddToUser.deleteToUser(db,id_registro,id_user)
         borrarArchivo(ruta_destinoImg+'\{}-{}.PNG'.format(versionAnterior[0].autor,versionAnterior[0].nombrecancion))
         borrarArchivo(ruta_destinoAud+'\{}-{}.mp3'.format(versionAnterior[0].autor,versionAnterior[0].nombrecancion))
-        return redirect(url_for('gestionar', id_user = id_user, buscar = ' ', idgen = idgen, like = like))
+        return redirect(url_for('gestionar', id_user = id_user, buscar = ' ', idgen = 0, like = 3))
     elif request.method == 'GET' and (buscar == ' ' and idgen == 0 and (like != 0 and like != 1)):
         print("entró a gestionar 2", buscar, idgen, like)
         genero = request.args.get('BusquedaGen')
@@ -140,13 +140,13 @@ def gestionar(id_user, buscar, idgen,like):
         if genero == None:
             genero = "0"
         if nombre == None:
-            nombre = ""
+            nombre = " "
         if mylike == None or mylike == "2":
             mylike = 3
         filtroOR = {}
         filtroAND = {}
         
-        if nombre != "":
+        if nombre != " ":
             filtroOR['nombrecancion LIKE '] = "'%"+nombre+"%'"
             filtroOR['autor LIKE ' ] = "'%"+nombre+"%'"
         if genero != "0":
