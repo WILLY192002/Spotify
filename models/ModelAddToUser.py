@@ -107,3 +107,22 @@ class ModelAddToUser():
                 return False
         except Exception as ex:
             raise Exception(ex)
+        
+    @classmethod
+    def join(self, db, usuario_id,):
+        Tabla = "TableUser"+str(usuario_id)
+        try:
+            cursor = db.connection.cursor()
+            sql = "SELECT U.id, U.usuario_id, U.nombrecancion, U.autor, G.nombre, U.foto, U.ilike FROM proyecto_spotify."+Tabla+" AS U INNER JOIN proyecto_spotify.generomusica AS G ON U.genero_id = G.id" 
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            salida = []
+            if rows != None:
+                for i in rows:
+                    Tablauser = TablaUser(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
+                    salida.append(Tablauser)
+                return salida
+            else:
+                return False
+        except Exception as ex:
+            raise Exception(ex)

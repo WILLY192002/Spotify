@@ -43,7 +43,7 @@ Spotify inicio
                             {% endif %}
                         </div>
                         <h2>{{recuperada.nombrecancion}}</h2>
-                        <p>{{recuperada.autor}} - Genero id: {{recuperada.genero}}</p>
+                        <p>{{recuperada.autor}} - Genero: {{recuperada.genero}}</p>
                         <div style="display: flex; justify-content: space-between;">
                             <a href="{{ url_for('editSong', id_user = user, id_reg = recuperada.id)}}" style="font-size: small; color: aliceblue;">Editar</a>
                             <a href="{{ url_for('actionlike', id_user = recuperada.usuario_id, id_reg = recuperada.id, EstadoAnt = recuperada.ilike, direccion = 'home')}}" style="font-size: medium;">

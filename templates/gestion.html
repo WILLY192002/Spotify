@@ -31,7 +31,7 @@ Gestionar canciones
     </form>
 
     {% for subida in subidas %}
-    <form id="expandir" action="/gestion-canciones/User_{{id_user}}/filterby/ftl1={{buscar}}/ftl2={{idgen}}/ftl3={{like}}" method="POST" enctype="multipart/form-data">
+    <form id="expandir" action="/gestion-canciones/User_{{id_user}}/filterby/ftl1=%20/ftl2={{idgen}}/ftl3={{like}}" method="POST" enctype="multipart/form-data">
         <div><input type="text" id="edt_id" name="edtId2" style="display: none;" value="{{subida.id}}"></div>
         <div id="G_noExpandir">
 

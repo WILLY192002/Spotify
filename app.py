@@ -140,13 +140,21 @@ def gestionar(id_user, buscar, idgen,like):
         if genero == None:
             genero = "0"
         if nombre == None:
-            nombre = " "
+            nombre = ''
         if mylike == None or mylike == "2":
             mylike = 3
         filtroOR = {}
         filtroAND = {}
         
-        if nombre != " ":
+        if nombre != '':
+            if nombre == ' ':
+                print("ES char con espacio")
+            if nombre == '':
+                print("ES char sin espacio")
+            if nombre == " ":
+                print("ES str con espacio")
+            if nombre == "":
+                print("ES str sin espacio")
             filtroOR['nombrecancion LIKE '] = "'%"+nombre+"%'"
             filtroOR['autor LIKE ' ] = "'%"+nombre+"%'"
         if genero != "0":
@@ -315,7 +323,8 @@ def filtrar(id_user,autor,nombre,buscar,idgen):
 
 @app.route('/index/User_<int:id_user>')
 def home(id_user):
-    Mysongs = ModelAddToUser.filter(db,id_user,{}, {})
+    Mysongs = ModelAddToUser.join(db, id_user)
+    #Mysongs = ModelAddToUser.filter(db,id_user,{}, {})
     allGeneros = ModelGenero.Select(db,{})
     return render_template('index.html', recuperadas = Mysongs, generos = allGeneros, autor = "", nombre = "", user = id_user, buscar=' ', idgen=0)
     
