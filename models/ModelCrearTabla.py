@@ -10,10 +10,11 @@ class ModelCrearTabla():
                     autor VARCHAR(100) NOT NULL,
                     genero_id INT NOT NULL,
                     foto BOOLEAN NOT NULL,
-                    ilike BOOLEAN NOT NULL
+                    ilike BOOLEAN NOT NULL,
                     FOREIGN KEY (usuario_id) REFERENCES user(id),
                     FOREIGN KEY (genero_id) REFERENCES generomusica(id)
                 );"""
+            print(sql)
             cursor.execute(sql)
             db.connection.commit()
             return True

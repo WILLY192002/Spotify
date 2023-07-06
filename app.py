@@ -259,12 +259,13 @@ def upload(id_user):
     generos = ModelGenero.Select(db, "")
     return render_template('upload.html', id_user = id_user,generos = generos)
 
-@app.route('/index/User_<int:id_user>/autor=<string:autor>/namesong=<string:nombre>/filterby/ftl1=<string:buscar>/ftl2=<int:idgen>', methods = ['GET'])
-def filtrar(id_user,autor,nombre,buscar,idgen):
-    if request.method == 'GET' and (buscar == ' ' and idgen == 0):
+@app.route('/index/User_<int:id_user>/autor=<string:autor>/namesong=<string:nombre>/filterby/ftl1=<string:buscar>/ftl2=<int:idgen>/ftl3=<int:like>', methods = ['GET'])
+def filtrar(id_user,autor,nombre,buscar,idgen,like):
+    if request.method == 'GET' and (buscar == ' ' and idgen == 0 and (like != 1 and like != 0)):
         print("SI ENTRO A FILTERer", buscar, "/",idgen)
         genero_id = request.args.get('BusquedaGen')
         nombre_autor = request.args.get('BusquedaNom')
+        mylike = request.args.get('BusquedaLike')
         print("SI ENTRO A FILTER", genero_id, "/",nombre_autor)
         if buscar == ' ':
             print("CLARO Q YES")
@@ -274,13 +275,19 @@ def filtrar(id_user,autor,nombre,buscar,idgen):
         
         if nombre_autor == "" or nombre_autor == None:
             nombre_autor = ' '
+
+        if mylike == None or mylike == "2":
+            mylike = 3
         filtroOR = {}
+        filtroAND = {}
 
         if genero_id != 0:
             filtroOR['genero_id ='] = genero_id
         if nombre_autor != ' ':
             filtroOR['nombrecancion LIKE '] = "'%"+nombre_autor+"%'"
             filtroOR['autor LIKE ' ] = "'%"+nombre_autor+"%'"
+        if mylike != 3:
+            filtroAND['ilike = '] = mylike
         
 
         """ if (genero_id != 0 and nombre_autor != ' '):
@@ -291,18 +298,21 @@ def filtrar(id_user,autor,nombre,buscar,idgen):
             filtros = {'nombrecancion': nombre_autor, 'autor': nombre_autor} """
 
         print("FILTROS", filtroOR)
-        filter_songs = ModelAddToUser.filter(db,id_user,filtroOR, {})
+        filter_songs = ModelAddToUser.filter(db, id_user, filtroOR, filtroAND)
         allGeneros = ModelGenero.Select(db,{})
-        return render_template('index.html', recuperadas = filter_songs, generos = allGeneros, autor = autor, nombre = nombre, user = id_user, buscar=nombre_autor, idgen=genero_id)
-    elif request.method == 'GET' and (buscar != ' ' or idgen != 0):
+        return render_template('index.html', recuperadas = filter_songs, generos = allGeneros, autor = autor, nombre = nombre, user = id_user, buscar=nombre_autor, idgen=genero_id, like = mylike)
+    elif request.method == 'GET' and (buscar != ' ' or idgen != 0 or like != "2"):
         print("SI ENTRO A FILTER2", buscar, "/", idgen)
         filtroOR = {}
+        filtrosAND = {}
 
         if idgen != 0:
             filtroOR['genero_id ='] = idgen
         if buscar != ' ':
             filtroOR['nombrecancion LIKE '] = "'%"+buscar+"%'"
             filtroOR['autor LIKE ' ] = "'%"+buscar+"%'"
+        if (like == 0 or like == 1):
+            filtrosAND['ilike = ']= like
 
         """ if (idgen != 0 and buscar != ' '):
             filtros = {'nombrecancion': buscar, 'autor': buscar, 'genero_id':idgen}
@@ -312,9 +322,10 @@ def filtrar(id_user,autor,nombre,buscar,idgen):
             filtros = {'nombrecancion': buscar, 'autor': buscar} """
 
         print("FILTROS2", filtroOR)
-        filter_songs = ModelAddToUser.filter(db,id_user,filtroOR, {})
+        filter_songs = ModelAddToUser.filter(db,id_user,filtroOR, filtrosAND)
         allGeneros = ModelGenero.Select(db,{})
-        return render_template('index.html', recuperadas = filter_songs, generos = allGeneros, autor = autor, nombre = nombre, user = id_user, buscar=buscar, idgen=idgen)
+        return render_template('index.html', recuperadas = filter_songs, generos = allGeneros, autor = autor, nombre = nombre, user = id_user, buscar=buscar, idgen=idgen, like = like)
+    x
     """ else:
         print("ENTRO AKI VIDA SUPER")
         filter_songs = ModelAddToUser.filter(db,id_user,{})
@@ -327,7 +338,7 @@ def home(id_user):
     Mysongs = ModelAddToUser.join(db, id_user)
     #Mysongs = ModelAddToUser.filter(db,id_user,{}, {})
     allGeneros = ModelGenero.Select(db,{})
-    return render_template('index.html', recuperadas = Mysongs, generos = allGeneros, autor = "", nombre = "", user = id_user, buscar=' ', idgen=0)
+    return render_template('index.html', recuperadas = Mysongs, generos = allGeneros, autor = "", nombre = "", user = id_user, buscar=' ', idgen=0, like = 2)
     
 
 

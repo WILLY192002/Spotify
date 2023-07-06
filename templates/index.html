@@ -11,7 +11,7 @@ Spotify inicio
         <h1 class="title_playlist">
             MIS CANCIONES
         </h1>
-        <form action="{{url_for('filtrar', id_user = user, autor =' ',nombre = ' ' ,buscar = ' ', idgen = 0)}}" method="GET" class="OptionBusqueda">
+        <form action="{{url_for('filtrar', id_user = user, autor =' ',nombre = ' ' ,buscar = ' ', idgen = 0, like = 2)}}" method="GET" class="OptionBusqueda">
             <div class="Btn_Lupa"><button><i class="fa-solid fa-magnifying-glass"></i></button></div>
             <div>
                 <input type="text" class="input" name="BusquedaNom" placeholder="Nombre de cancion">
@@ -25,13 +25,21 @@ Spotify inicio
                     {% endfor %}
                 </select>
             </div>
+            <div class="checkfilter">
+                <label style="color: whitesmoke; font-size: medium;">Filtrar por: </label>
+                <select id="list_generos" name="BusquedaLike" onchange="checkOption(this.value)">
+                    <option value=2>Todo</option>
+                    <option value=0>No me gusta</option>
+                    <option value=1>Me gusta</option>
+                </select>
+            </div>
         </form>
         
         {% if recuperadas %}
         <div id="music_container_cards" class="container_musics_cards">
             {% for recuperada in recuperadas %}
             <!-- <form action='/reproduccion/User_{{recuperada.usuario_id}}/Autor={{recuperada.autor}}/Cancion={{recuperada.nombrecancion}}/busqueda/id_genero' method="GET"> -->
-            <form action='/index/User_{{user}}/autor={{recuperada.autor}}/namesong={{recuperada.nombrecancion}}/filterby/ftl1={{buscar}}/ftl2={{idgen}}' method="GET">
+            <form action="{{url_for('filtrar', id_user = recuperada.usuario_id, autor = recuperada.autor,nombre = recuperada.nombrecancion ,buscar = buscar, idgen = idgen, like = like)}}" method="GET">
                 <div class="music_card">
                     <div class="card">
                         <div class="card_img">
