@@ -12,8 +12,6 @@ from models.ModelAddToUser import ModelAddToUser
 #Entities
 from models.entities.User import User
 
-from models.entities.TablaUser import TablaUser
-
 #Operative System
 import os
 
@@ -37,11 +35,6 @@ def load_user(id):
 def index():
     return redirect(url_for('login'))
 
-@app.route('/my-favorites-songs/User_<int:id_user>')
-def favoritas(id_user):
-
-    return render_template('favorites.html', id_user = id_user)
-
 @app.route('/actionlike/User_<int:id_user>/Registro=<int:id_reg>/Estate=<int:EstadoAnt>/return_to=<string:direccion>')
 def actionlike(id_user,id_reg,EstadoAnt, direccion):
 
@@ -56,7 +49,6 @@ def actionlike(id_user,id_reg,EstadoAnt, direccion):
 
 @app.route('/User_<int:id_user>/edit-song/Reg_<int:id_reg>', methods=['GET','POST'])
 def editSong(id_user, id_reg):
-    #action='/User_{{subida.usuario_id}}/edit-song/{{subida.id}}'
     if request.method == 'POST':
         id_registro = request.form['edtId']
         nombreAnterior = ModelAddToUser.Select(db, id_user, {'id':id_registro})
@@ -92,7 +84,6 @@ def editSong(id_user, id_reg):
             imagen = 1
             cambios['foto'] = 1
         else:
-            print("ENTRA DONDE NO CREIA")
             imagenAnterior = nombreAnterior[0].autor+'-'+nombreAnterior[0].nombrecancion+'.PNG'
             ruta_destinoImg = ruta_proyecto+'\static\img\{}\{}'.format('ImgUser_'+(str(id_user)), imagenAnterior)
             nuevonombre = ruta_proyecto+'\static\img\{}\{}'.format('ImgUser_'+(str(id_user)), autor+'-'+nombrecancion+'.PNG')
@@ -119,9 +110,7 @@ def editSong(id_user, id_reg):
 
 @app.route('/gestion-canciones/User_<int:id_user>/filterby/ftl1=<string:buscar>/ftl2=<int:idgen>/ftl3=<int:like>', methods=['GET','POST'])
 def gestionar(id_user, buscar, idgen,like):
-    #{{ url_for('gestionar', id_user = id_user, buscar = buscar, idgen = idgen, like = like)}}
     if request.method == 'POST':
-        print("entró a gestionar 1")
         id_registro = request.form['edtId2']
         versionAnterior = ModelAddToUser.Select(db, id_user, {'id':id_registro})
         ruta_proyecto = os.path.dirname(os.path.abspath(__file__))
@@ -132,12 +121,10 @@ def gestionar(id_user, buscar, idgen,like):
         borrarArchivo(ruta_destinoAud+'\{}-{}.mp3'.format(versionAnterior[0].autor,versionAnterior[0].nombrecancion))
         return redirect(url_for('gestionar', id_user = id_user, buscar = ' ', idgen = 0, like = 3))
     elif request.method == 'GET' and (buscar == ' ' and idgen == 0 and (like != 0 and like != 1)):
-        print("entró a gestionar 2", buscar, idgen, like)
         genero = request.args.get('BusquedaGen')
         nombre = request.args.get('BusquedaNom')
         mylike = request.args.get('BusquedaLike')
 
-        print(genero, nombre)
         if genero == None:
             genero = "0"
         if nombre == None:
@@ -148,41 +135,17 @@ def gestionar(id_user, buscar, idgen,like):
         filtroAND = {}
         
         if nombre != '':
-            if nombre == ' ':
-                print("ES char con espacio")
-            if nombre == '':
-                print("ES char sin espacio")
-            if nombre == " ":
-                print("ES str con espacio")
-            if nombre == "":
-                print("ES str sin espacio")
             filtroOR['nombrecancion LIKE '] = "'%"+nombre+"%'"
             filtroOR['autor LIKE ' ] = "'%"+nombre+"%'"
         if genero != "0":
             filtroOR['genero_id ='] = genero
         if mylike != 3:
             filtroAND['ilike = '] = mylike
-
-
-        """ print("FILTROS",nombre,"||",genero)
-        if nombre != "" and genero != 0:
-            print("Entrooo1")
-            print("Entrooo1",nombre,"||",genero)
-            filtro = {'nombrecancion':nombre, 'autor':nombre, 'genero_id':genero}
-        elif nombre != "":
-            print("Entrooo2")
-            print("Entrooo2",nombre,"||",genero)
-            filtro = {'nombrecancion':nombre, 'autor':nombre}
-        elif genero != 0:
-            print("Entrooo3")
-            print("Entrooo3",nombre,"||",genero)
-            filtro = {'genero_id':genero} """
         
         recuperadas = ModelAddToUser.filter(db, id_user, filtroOR, filtroAND)
         generos = ModelGenero.Select(db,{})
         return render_template('gestion.html', subidas = recuperadas, generos = generos, id_user = id_user, buscar = nombre, idgen = genero, like = mylike)
     else:
-        print("Entro al ESE")
         filtrosOR = {}
         filtrosAND = {}
         if buscar != ' ':
@@ -199,7 +162,6 @@ def gestionar(id_user, buscar, idgen,like):
         
 @app.route('/user_<int:id_user>/upload-music', methods=['GET','POST'])
 def upload(id_user):
-    print("IDE USUARIO:",id_user)
     if request.method == 'POST':
         imagen = request.files['img_File'] #ESTE ES EL ARCHIVO
         audio = request.files['mp3_File']
@@ -233,26 +195,8 @@ def upload(id_user):
                 genero = VerificacionGenero[0].id
         
         Tablauser = ModelAddToUser.Select(db, id_user, {'autor': autor, 'nombrecancion':nombre})
-        print("ESTO ES: ", Tablauser)
         if len(Tablauser) == 0:
             ModelAddToUser.AddToUser(db,id_user,nombre.capitalize(),autor.capitalize(),genero, imagen, False)
-
-        #AGREGAR UNA NUEVA CANCION Y VERIFICAR SI EXISTE
-        # AddCancion = Canciones(0,nombre.capitalize(), autor.capitalize(), genero, imagen)
-        # VerificacionCancion = verificarCancion(db, {'autor': '{}'.format(autor), 'nombre':'{}'.format(nombre)})
-        # idCancion = 0
-        # if VerificacionCancion:
-        #     idCancion = VerificacionCancion[0].id
-        # else:
-        #     ModelCanciones.agregar(db, AddCancion)
-        #     idCancion = verificarCancion(db, {'autor': '{}'.format(autor), 'nombre':'{}'.format(nombre)})[0].id
-        
-        
-        # #AGRE NUEVA SUVIDA
-        # VerificacionSubida = verificarSubida(db, [id_user, idCancion])
-        # if VerificacionSubida == False:
-        #     AddSubida = Subida(id_user, idCancion)
-        #     ModelSubida.agregar(db, AddSubida)
         
         return redirect(url_for('home', id_user = id_user))
     
@@ -262,20 +206,14 @@ def upload(id_user):
 @app.route('/index/User_<int:id_user>/autor=<string:autor>/namesong=<string:nombre>/filterby/ftl1=<string:buscar>/ftl2=<int:idgen>/ftl3=<int:like>', methods = ['GET'])
 def filtrar(id_user,autor,nombre,buscar,idgen,like):
     if request.method == 'GET' and (buscar == ' ' and idgen == 0 and (like != 1 and like != 0)):
-        print("SI ENTRO A FILTERer", buscar, "/",idgen)
         genero_id = request.args.get('BusquedaGen')
         nombre_autor = request.args.get('BusquedaNom')
         mylike = request.args.get('BusquedaLike')
-        print("SI ENTRO A FILTER", genero_id, "/",nombre_autor)
-        if buscar == ' ':
-            print("CLARO Q YES")
         
         if genero_id == "" or genero_id == None:
             genero_id = 0
-        
         if nombre_autor == "" or nombre_autor == None:
             nombre_autor = ' '
-
         if mylike == None or mylike == "2":
             mylike = 3
         filtroOR = {}
@@ -288,21 +226,11 @@ def filtrar(id_user,autor,nombre,buscar,idgen,like):
             filtroOR['autor LIKE ' ] = "'%"+nombre_autor+"%'"
         if mylike != 3:
             filtroAND['ilike = '] = mylike
-        
 
-        """ if (genero_id != 0 and nombre_autor != ' '):
-            filtros = {'nombrecancion': nombre_autor, 'autor': nombre_autor, 'genero_id':genero_id}
-        elif (genero_id != 0 and nombre_autor == ' '):
-            filtros = {'genero_id':genero_id}
-        elif genero_id == 0 and nombre_autor != ' ':
-            filtros = {'nombrecancion': nombre_autor, 'autor': nombre_autor} """
-
-        print("FILTROS", filtroOR)
         filter_songs = ModelAddToUser.filter(db, id_user, filtroOR, filtroAND)
         allGeneros = ModelGenero.Select(db,{})
         return render_template('index.html', recuperadas = filter_songs, generos = allGeneros, autor = autor, nombre = nombre, user = id_user, buscar=nombre_autor, idgen=genero_id, like = mylike)
     elif request.method == 'GET' and (buscar != ' ' or idgen != 0 or like != "2"):
-        print("SI ENTRO A FILTER2", buscar, "/", idgen)
         filtroOR = {}
         filtrosAND = {}
 
@@ -314,65 +242,15 @@ def filtrar(id_user,autor,nombre,buscar,idgen,like):
         if (like == 0 or like == 1):
             filtrosAND['ilike = ']= like
 
-        """ if (idgen != 0 and buscar != ' '):
-            filtros = {'nombrecancion': buscar, 'autor': buscar, 'genero_id':idgen}
-        elif (idgen != 0 and buscar == ' '):
-            filtros = {'genero_id':idgen}
-        else:
-            filtros = {'nombrecancion': buscar, 'autor': buscar} """
-
-        print("FILTROS2", filtroOR)
         filter_songs = ModelAddToUser.filter(db,id_user,filtroOR, filtrosAND)
         allGeneros = ModelGenero.Select(db,{})
         return render_template('index.html', recuperadas = filter_songs, generos = allGeneros, autor = autor, nombre = nombre, user = id_user, buscar=buscar, idgen=idgen, like = like)
-    x
-    """ else:
-        print("ENTRO AKI VIDA SUPER")
-        filter_songs = ModelAddToUser.filter(db,id_user,{})
-        allGeneros = ModelGenero.Select(db,{})
-        return render_template('index.html', recuperadas = filter_songs, generos = allGeneros, autor = "", nombre = "", user = id_user, buscar=' ', idgen=0)
- """
 
 @app.route('/index/User_<int:id_user>')
 def home(id_user):
     Mysongs = ModelAddToUser.join(db, id_user)
-    #Mysongs = ModelAddToUser.filter(db,id_user,{}, {})
     allGeneros = ModelGenero.Select(db,{})
     return render_template('index.html', recuperadas = Mysongs, generos = allGeneros, autor = "", nombre = "", user = id_user, buscar=' ', idgen=0, like = 2)
-    
-
-
-
-    """ if id_user != 0:
-        genero = request.args.get('BusquedaGen')
-        nombre = request.args.get('BusquedaNom')
-        if genero == None:
-            genero = ""
-        if nombre == None:
-            nombre =""
-        filtro = {}
-
-        if id_gen:
-            filtro = {'genero_id':id_gen}
-        else:
-            if nombre != "" and genero != "":
-                print("Entrooo1")
-                print("Entrooo1",nombre,"||",genero)
-                filtro = {'nombrecancion':nombre, 'autor':nombre, 'genero_id':genero}
-            elif nombre != "":
-                print("Entrooo2")
-                print("Entrooo2",nombre,"||",genero)
-                filtro = {'nombrecancion':nombre, 'autor':nombre}
-            elif genero != "":
-                print("Entrooo3")
-                print("Entrooo3",nombre,"||",genero)
-                filtro = {'genero_id':genero}
-
-        recuperadas = ModelAddToUser.filter(db, id_user, filtro)
-        generos = ModelGenero.Select(db,{})
-        return render_template('index.html', recuperadas = recuperadas, generos = generos,autor = "", nombre = "", user = id_user, id_gen = id_gen)    
-    else:
-        return render_template('auth/login.html') """
 
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
@@ -419,7 +297,6 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-    
 
 if __name__=='__main__':
     app.config.from_object(config['development'])

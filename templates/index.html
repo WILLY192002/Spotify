@@ -38,7 +38,6 @@ Spotify inicio
         {% if recuperadas %}
         <div id="music_container_cards" class="container_musics_cards">
             {% for recuperada in recuperadas %}
-            <!-- <form action='/reproduccion/User_{{recuperada.usuario_id}}/Autor={{recuperada.autor}}/Cancion={{recuperada.nombrecancion}}/busqueda/id_genero' method="GET"> -->
             <form action="{{url_for('filtrar', id_user = recuperada.usuario_id, autor = recuperada.autor,nombre = recuperada.nombrecancion ,buscar = buscar, idgen = idgen, like = like)}}" method="GET">
                 <div class="music_card">
                     <div class="card">
@@ -58,17 +57,13 @@ Spotify inicio
                                 <i class="fa-solid fa-heart {% if recuperada.ilike == True %}likerojo{% else %}likeamarillo{% endif %}"></i>
                             </a>
                         </div>
-                        
                     </div>
-
                 </div>
             </form>
-
             {% endfor%}
         </div>
         {% endif %}
     </div>
-
     <!--REPRODUCCION-->
     <div class="play">
         <div class="content">

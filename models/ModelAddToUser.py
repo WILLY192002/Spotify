@@ -33,7 +33,6 @@ class ModelAddToUser():
         try:
             cursor = db.connection.cursor()
             sql = "DELETE FROM proyecto_spotify."+Tabla+" WHERE id = {}".format(id_r)
-            print("SQL: ", sql)
             cursor.execute(sql)
             db.connection.commit()
             return True
@@ -53,7 +52,6 @@ class ModelAddToUser():
                     condiciones.append(f"{clave} = '{valor}'")
 
                 sql += " WHERE " + (" AND ".join(condiciones))
-                print(sql)
             cursor.execute(sql)
             rows = cursor.fetchall()
             salida = []
@@ -94,7 +92,6 @@ class ModelAddToUser():
                 else:
                     sql += " WHERE "+condiciones[0]
             
-            print("AVERRACION: ", sql)
             cursor.execute(sql)
             rows = cursor.fetchall()
             salida = []
